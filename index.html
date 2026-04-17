@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>STONE — Brand JARVIS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --text-muted: #888;
+    --text-dim: #444;
+    --accent: #c8b89a;
+    --accent2: #8a7560;
+    --red: #c0392b;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .app {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border2);
+  }
+
+  .brand-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .stone-mark {
+    width: 44px;
+    height: 44px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    color: #0a0a0a;
+  }
+
+  .brand-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.18em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4a9e5c;
+    animation: breathe 2.5s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .update-btn {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: none;
+    border: 0.5px solid var(--border2);
+    padding: 5px 12px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+
+  .update-btn:hover, .update-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* SETTINGS */
+  .settings-panel {
+    display: none;
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .settings-panel.visible { display: block; }
+
+  .settings-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 10px;
+  }
+
+  .settings-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: var(--bg);
+    border: 0.5px solid var(--border2);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    resize: vertical;
+    line-height: 1.6;
+    outline: none;
+  }
+
+  .settings-textarea:focus { border-color: var(--accent); }
+
+  .settings-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .save-btn {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.06em;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    padding: 7px 18px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: opacity 0.15s;
+  }
+
+  .save-btn:hover { opacity: 0.85; }
+
+  .save-note {
+    font-size: 11px;
+    color: #4a9e5c;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* COLLECTIONS */
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 10px;
+  }
+
+  .collections-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .col-pill {
+    padding: 5px 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    border: 0.5px solid var(--border2);
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .col-pill:hover { border-color: var(--accent2); color: var(--accent); }
+
+  .col-pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0a0a0a;
+  }
+
+  /* MODES */
+  .modes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 540px) {
+    .modes-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .mode-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mode-card:hover { border-color: var(--border2); background: var(--surface2); }
+
+  .mode-card.active {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .mode-glyph {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .mode-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+  }
+
+  .mode-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* PROMPT */
+  .prompt-block {
+    margin-bottom: 1rem;
+  }
+
+  .prompt-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 14px 16px;
+    resize: none;
+    line-height: 1.6;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .prompt-textarea:focus { border-color: var(--accent); }
+  .prompt-textarea::placeholder { color: var(--text-dim); }
+
+  .prompt-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .quick-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .quick-chip {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    padding: 4px 10px;
+    border: 0.5px solid var(--border2);
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .quick-chip:hover { border-color: var(--accent2); color: var(--text); }
+
+  .send-btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.16em;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    padding: 9px 28px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+
+  .send-btn:hover { opacity: 0.85; }
+  .send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* RESPONSE */
+  .response-block {
+    display: none;
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    margin-top: 1rem;
+  }
+
+  .response-block.visible { display: block; }
+
+  .response-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .response-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .copy-btn {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--text-muted);
+    background: none;
+    border: 0.5px solid var(--border2);
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { color: var(--text); border-color: var(--border2); }
+
+  .response-body {
+    padding: 1.25rem 1.5rem;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text);
+    white-space: pre-wrap;
+    min-height: 80px;
+  }
+
+  .loading {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .loading span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: dots 1.2s infinite;
+  }
+
+  .loading span:nth-child(2) { animation-delay: 0.2s; }
+  .loading span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes dots {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 1.25rem 0;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="brand-left">
+      <div class="stone-mark">STN</div>
+      <div>
+        <div class="brand-title">STONE</div>
+        <div class="brand-sub">Brand JARVIS — Internal Creative Director</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status"><span class="status-dot"></span> Live</div>
+      <button class="update-btn" id="settings-toggle">Update brain</button>
+    </div>
+  </div>
+
+  <div class="settings-panel" id="settings-panel">
+    <div class="settings-label">Update brand brain</div>
+    <textarea class="settings-textarea" id="brand-context-input" placeholder="Paste new collection decisions, design updates, copy rules, mood shifts, anything that changes..."></textarea>
+    <div class="settings-footer">
+      <button class="save-btn" id="save-btn">Save</button>
+      <span class="save-note" id="save-note"></span>
+    </div>
+  </div>
+
+  <div class="section-label">Collection</div>
+  <div class="collections-row" id="collections-row">
+    <button class="col-pill active" data-c="ALL">All</button>
+    <button class="col-pill" data-c="REPUBLIC">Republic</button>
+    <button class="col-pill" data-c="EDEN">Eden</button>
+    <button class="col-pill" data-c="VIGIL">Vigil</button>
+    <button class="col-pill" data-c="ZEDEK">Zedek</button>
+    <button class="col-pill" data-c="EXOUSIA">Exousia</button>
+    <button class="col-pill" data-c="SERAPH">Seraph</button>
+    <button class="col-pill" data-c="LITHOS">Lithos</button>
+  </div>
+
+  <div class="section-label">Mode</div>
+  <div class="modes-grid" id="modes-grid">
+    <div class="mode-card active" data-m="creative">
+      <div class="mode-glyph">◈</div>
+      <div class="mode-name">Creative direction</div>
+      <div class="mode-desc">Concepts, themes, references</div>
+    </div>
+    <div class="mode-card" data-m="copy">
+      <div class="mode-glyph">◻</div>
+      <div class="mode-name">Copy & voice</div>
+      <div class="mode-desc">Drops, captions, product desc</div>
+    </div>
+    <div class="mode-card" data-m="symbols">
+      <div class="mode-glyph">✦</div>
+      <div class="mode-name">Symbols & meaning</div>
+      <div class="mode-desc">Catholic icons, hidden details</div>
+    </div>
+    <div class="mode-card" data-m="design">
+      <div class="mode-glyph">◧</div>
+      <div class="mode-name">Design language</div>
+      <div class="mode-desc">Palette, silhouettes, materials</div>
+    </div>
+    <div class="mode-card" data-m="strategy">
+      <div class="mode-glyph">◎</div>
+      <div class="mode-name">Brand strategy</div>
+      <div class="mode-desc">Positioning, drops, marketing</div>
+    </div>
+    <div class="mode-card" data-m="parsons">
+      <div class="mode-glyph">◱</div>
+      <div class="mode-name">Parsons assist</div>
+      <div class="mode-desc">Assignments using STONE</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="prompt-block">
+    <textarea class="prompt-textarea" id="prompt" placeholder="Ask JARVIS anything... e.g. 'Drop concept for REPUBLIC' or 'What Catholic symbols fit VIGIL?' or 'Write a caption for a washed hoodie'&#10;&#10;Cmd+Enter to send."></textarea>
+    <div class="prompt-footer">
+      <div class="quick-row" id="quick-row"></div>
+      <button class="send-btn" id="send-btn">Ask JARVIS →</button>
+    </div>
+  </div>
+
+  <div class="response-block" id="response-block">
+    <div class="response-header">
+      <span class="response-tag" id="response-tag">JARVIS</span>
+      <button class="copy-btn" id="copy-btn">Copy</button>
+    </div>
+    <div class="response-body" id="response-body"></div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-text">STONE — Built for the founder. Not for the noise.</span>
+    <span class="footer-text">v1.0</span>
+  </div>
+
+</div>
+
+<script>
+const STONE_BRAIN = `You are JARVIS — the internal creative director and brand brain for STONE, a clothing brand built by its founder whose last name is literally Stone.
+
+FOUNDER CONTEXT:
+- Solo Catholic founder, online design student at Parsons School of Design, also a day trader
+- Lost his mother at 14. Lost a close girlfriend in 2021 who introduced him to Jesus after he had been exploring Islam and conspiracy theories following years of grief and resentment toward God. He considers her an angel sent to guide him. These losses are sacred and private — they inform the soul of the brand without being advertised.
+- Faith deepened around 2023. Prays and reads the Word daily. Does not attend church regularly but is deeply Catholic in heritage (paternal grandparents).
+- The brand name STONE is his actual last name — not a concept. This makes the entire spiritual architecture (Rock, Cornerstone, Lithos, Christ as foundation) personally tied to his identity.
+
+BRAND MISSION:
+STONE exists to point people toward Jesus Christ through clothing that feels solid in an unstable world. It plants quiet seeds of the Gospel — pieces that carry truth even when no one is preaching out loud. As a Catholic, the founder sees this as a unique form of evangelization: reaching people who would never step into a church.
+
+THE 7 COLLECTIONS (PILLARS):
+1. REPUBLIC — The awakening. Questioning the noise, subtle rebellion. AESTHETIC: Raw distressed streetwear, oversized washed hoodies, graphic-heavy denim, underground military energy. Entry point.
+2. EDEN — The seeking/curiosity phase. AESTHETIC: Oversized thoughtful pieces, nature-inspired details, subtle script.
+3. VIGIL — The discernment phase. Protecting your mind. AESTHETIC: Clean stealthy techwear, utility pieces.
+4. ZEDEK — Standing firm with conviction. AESTHETIC: Rugged, durable streetwear, armor-like quality.
+5. EXOUSIA — Confidence and authority. AESTHETIC: More refined, elevated fits and materials.
+6. SERAPH — The spiritual battle. AESTHETIC: Darker, celestial warrior aesthetic, angelic imagery.
+7. LITHOS — The solid foundation. Greek for "stone/rock." AESTHETIC: High-quality basics, clean neutrals, peaceful but strong. The destination.
+
+NARRATIVE LAYERS:
+- Surface: Mysterious, awakening, street-coded, cool.
+- Middle: Spiritual depth through symbols, scripture, intentional meaning.
+- Deep: Full Gospel truth for anyone who digs far enough.
+
+DESIGN PHILOSOPHY — NOTICERS ONLY:
+- Hidden symbols and messages only a detail person catches
+- Fade-reveal text: words that emerge as the garment ages — truth revealing itself over time
+- Interior labels, hidden hems, inner linings with scripture or Latin
+- Tonal prints: invisible unless you're really looking
+- Embroidery that reads as abstract from distance but resolves into meaning up close
+- REPUBLIC = most hidden/coded. LITHOS = most visible. The revelation deepens as the arc progresses.
+
+CATHOLIC ICONOGRAPHY:
+Sacred Heart, Chi-Rho, Ichthys, Alpha & Omega, Rosary beads (as hardware/stitching), Cross variations, Saints, Cathedral architecture, Illuminated manuscript lettering, Latin scripture.
+Collection mapping: REPUBLIC → Ichthys/Chi-Rho hidden. VIGIL → Rosary in hardware. SERAPH → Sacred Heart, angelic. LITHOS → Alpha & Omega, "Petra."
+
+VISUAL DNA:
+Kanye/Yeezy, Virgil Abloh/Off-White, Travis Scott/Cactus Jack, Don C, Rick Owens, Chrome Hearts, Christian Dior, Balenciaga, Chanel, We Are Righteous.
+Distressed, acid-washed fabrics. Oversized dropped silhouettes. Washed blacks, greys, off-whites with intentional color moments.
+
+TARGET — ALEX RIVERA:
+Age 19-24. City/suburb street culture. Questioning but not publicly conspiracy. Late nights on TikTok/Instagram/X. Wears baggy cargos, oversized hoodies, graphic tees. Discovers brands through hidden-detail breakdowns.
+BIGGEST TURN-OFF: Brands that look deep but are actually shallow marketing.
+
+BRAND VOICE:
+Quietly bold. Mysterious but never fake. Confident in Christ without being preachy. Short, sharp, street-level language. Drop hints. Let people come to truth on their own time.
+
+PARSONS:
+Current module: Marketing, Branding & Visual Communication. Topics: Tribe needs, Brand message, Visual storytelling, Media strategy, Seeding the market. STONE can be used as direct subject matter for assignments.
+
+RESPONSE STYLE:
+- Be specific and actionable, never generic
+- Reference the collection's spiritual meaning and aesthetic lane
+- Write copy in STONE's voice — not consulting from outside, texting from inside
+- Keep tight unless depth is needed`;
+
+let activeCollection = 'ALL';
+let activeMode = 'creative';
+let customContext = '';
+
+const quickMap = {
+  creative: ['Drop concept for REPUBLIC', 'Mood for SERAPH', 'Creative direction for EDEN'],
+  copy: ['Product desc for washed hoodie', 'Caption for REPUBLIC drop', 'Drop announcement'],
+  symbols: ['Catholic symbols for VIGIL', 'Hidden detail ideas for REPUBLIC', 'Latin text for inside label'],
+  design: ['Color palette for SERAPH', 'Silhouette direction for LITHOS', 'Material story for ZEDEK'],
+  strategy: ['How to seed REPUBLIC launch', 'Drop sequencing strategy', 'Pricing direction'],
+  parsons: ['STONE tribe for branding module', 'Visual story assignment using STONE', 'Seeding strategy for Parsons']
+};
+
+function renderQuickChips() {
+  const row = document.getElementById('quick-row');
+  row.innerHTML = (quickMap[activeMode] || []).map(q =>
+    `<button class="quick-chip" onclick="fillPrompt('${q}')">${q}</button>`
+  ).join('');
+}
+
+function fillPrompt(text) {
+  document.getElementById('prompt').value = text;
+}
+
+document.getElementById('collections-row').addEventListener('click', e => {
+  const pill = e.target.closest('.col-pill');
+  if (!pill) return;
+  document.querySelectorAll('.col-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  activeCollection = pill.dataset.c;
+});
+
+document.getElementById('modes-grid').addEventListener('click', e => {
+  const card = e.target.closest('.mode-card');
+  if (!card) return;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  activeMode = card.dataset.m;
+  renderQuickChips();
+});
+
+document.getElementById('settings-toggle').addEventListener('click', () => {
+  const panel = document.getElementById('settings-panel');
+  const btn = document.getElementById('settings-toggle');
+  const open = panel.classList.toggle('visible');
+  btn.classList.toggle('active', open);
+  if (open && customContext) document.getElementById('brand-context-input').value = customContext;
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  customContext = document.getElementById('brand-context-input').value.trim();
+  const note = document.getElementById('save-note');
+  note.textContent = customContext ? '✓ Brain updated' : '✓ Cleared';
+  setTimeout(() => { note.textContent = ''; }, 2500);
+});
+
+document.getElementById('copy-btn').addEventListener('click', () => {
+  const text = document.getElementById('response-body').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+  });
+});
+
+async function ask() {
+  const promptEl = document.getElementById('prompt');
+  const prompt = promptEl.value.trim();
+  if (!prompt) return;
+
+  const sendBtn = document.getElementById('send-btn');
+  const block = document.getElementById('response-block');
+  const body = document.getElementById('response-body');
+  const tag = document.getElementById('response-tag');
+
+  sendBtn.disabled = true;
+  block.classList.add('visible');
+  body.innerHTML = '<div class="loading"><span></span><span></span><span></span></div>';
+  tag.textContent = `JARVIS — ${activeMode.toUpperCase()}${activeCollection !== 'ALL' ? ' / ' + activeCollection : ''}`;
+
+  const modeInstructions = {
+    creative: 'Respond as creative director: give concepts, references, and directional ideas.',
+    copy: 'Write actual STONE copy in the brand voice — product description, caption, or drop text.',
+    symbols: 'Focus on Catholic iconography, hidden design details, and layered symbolic meaning.',
+    design: 'Focus on visual design language: palette, silhouettes, materials, and construction details.',
+    strategy: 'Think like a brand strategist and solo founder advisor. Be direct and practical.',
+    parsons: 'Connect this to a Parsons assignment. Show how STONE directly answers the academic brief.'
+  };
+
+  const collectionNote = activeCollection !== 'ALL' ? `\n\nFocus specifically on the ${activeCollection} collection.` : '';
+  const systemPrompt = STONE_BRAIN + (customContext ? `\n\nFOUNDER UPDATES:\n${customContext}` : '');
+  const userMsg = `MODE: ${activeMode.toUpperCase()}${collectionNote}\n\n${prompt}\n\n${modeInstructions[activeMode] || ''}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMsg }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(b => b.text || '').join('') || 'No response received.';
+    body.textContent = text;
+  } catch (err) {
+    body.textContent = 'Something went wrong. Check your connection and try again.';
+  }
+
+  sendBtn.disabled = false;
+}
+
+document.getElementById('send-btn').addEventListener('click', ask);
+document.getElementById('prompt').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) ask();
+});
+
+renderQuickChips();
+</script>
+</body>
+</html>
